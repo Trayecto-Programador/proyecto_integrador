@@ -1,0 +1,33 @@
+private java.sql.Time convertirTiempo(java.time.LocalTime TiempoForm){
+        java.sql.Time TiempoSql = java.sql.Time.valueOf(TiempoForm);
+        return TiempoSql;
+    }
+hora = Integer.parseInt(this.SpHora.getValue().toString());
+                    minuto = Integer.parseInt(this.SpMinutos.getValue().toString());
+                    LocalTime TiempoForm = LocalTime.of(hora, minuto);
+                    Duracion = convertirTiempo(TiempoForm);
+
+
+
+/*********************************************************************************************/
+
+int h, m;
+        java.time.LocalTime hora = art.getDuracion().toLocalTime();//sql 11:25:32:00 ==> 11:25:32:00 pero pueedo sacar hh, mm, ss por separados
+        h = hora.getHour();//me separa la hora
+        m = hora.getMinute();// me  separa los minutos
+        //this.SpMinutos.setValue(hora.getMinute(); //otra forma
+        this.SpHora.setValue(h);
+        this.SpMinutos.setValue(m);
+ESTE METODO SIRVE PARA PASAR DE FORMULARIO A SQL:
+private java.sql.Time convertirTiempo(java.time.LocalTime TiempoForm){
+        java.sql.Time TiempoSql = java.sql.Time.valueOf(TiempoForm);
+        return TiempoSql;
+    }
+
+
+
+/************************************************************************************************/
+hora = Integer.parseInt(this.SpHora.getValue().toString());
+                    minuto = Integer.parseInt(this.SpMinutos.getValue().toString());
+                    LocalTime TiempoForm = LocalTime.of(hora, minuto);
+                    Duracion = convertirTiempo(TiempoForm)

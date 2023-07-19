@@ -1,0 +1,179 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+-- -----------------------------------------------------
+-- Schema cfp
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema cfp
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `cfp` DEFAULT CHARACTER SET utf8 ;
+USE `cfp` ;
+
+-- -----------------------------------------------------
+-- Table `cfp`.`Alumnos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cfp`.`Alumnos` (
+  `idAlumno` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(50) NOT NULL,
+  `apellido` VARCHAR(50) NOT NULL,
+  `dni` VARCHAR(10) NOT NULL,
+  `fecNac` DATE NOT NULL,
+  `direccion` VARCHAR(100) NULL,
+  `localidad` VARCHAR(50) NULL,
+  `codPostal` INT(4) NULL,
+  `telefono` VARCHAR(20) NULL,
+  PRIMARY KEY (`idAlumno`),
+  UNIQUE INDEX `idPersona_UNIQUE` (`idAlumno` ASC))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `cfp`.`Cursos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cfp`.`Cursos` (
+  `codCurso` INT NOT NULL,
+  `nombre` VARCHAR(50) NULL,
+  PRIMARY KEY (`codCurso`),
+  UNIQUE INDEX `codCurso_UNIQUE` (`codCurso` ASC),
+  UNIQUE INDEX `nombre_UNIQUE` (`nombre` ASC))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `cfp`.`Profesores`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cfp`.`Profesores` (
+  `idProfesor` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(50) NOT NULL,
+  `apellido` VARCHAR(50) NOT NULL,
+  `dni` VARCHAR(10) NOT NULL,
+  `fecNac` DATE NOT NULL,
+  `direccion` VARCHAR(100) NULL,
+  `localidad` VARCHAR(50) NULL,
+  `codPostal` INT(4) NULL,
+  `telefono` VARCHAR(20) NULL,
+  `Curso_codCurso` INT NOT NULL,
+  PRIMARY KEY (`idProfesor`),
+  UNIQUE INDEX `idPersona_UNIQUE` (`idProfesor` ASC),
+  INDEX `fk_Profesor_Curso1_idx` (`Curso_codCurso` ASC),
+  CONSTRAINT `fk_Profesor_Curso1`
+    FOREIGN KEY (`Curso_codCurso`)
+    REFERENCES `cfp`.`Cursos` (`codCurso`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `cfp`.`Meses`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cfp`.`Meses` (
+  `codMes` INT(2) NOT NULL,
+  `Mes` VARCHAR(9) NOT NULL,
+  PRIMARY KEY (`codMes`),
+  UNIQUE INDEX `Mes_UNIQUE` (`Mes` ASC))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `cfp`.`Asignaturas`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cfp`.`Asignaturas` (
+  `idAsignatura` INT NOT NULL,
+  `nombre` VARCHAR(50) NOT NULL,
+  `horaSemanal` INT(3) NULL,
+  `nota` INT(3) NULL,
+  `incidencia` VARCHAR(100) NULL,
+  `dia` INT(2) NOT NULL,
+  `hora` INT(2) NOT NULL,
+  `Curso_codCurso` INT NOT NULL,
+  `Profesor_idProfesor` INT NOT NULL,
+  `Meses_codMes` INT(2) NOT NULL,
+  PRIMARY KEY (`idAsignatura`),
+  UNIQUE INDEX `idAsignatura_UNIQUE` (`idAsignatura` ASC),
+  INDEX `fk_Asignatura_Curso1_idx` (`Curso_codCurso` ASC),
+  INDEX `fk_Asignatura_Profesor1_idx` (`Profesor_idProfesor` ASC),
+  INDEX `fk_Asignatura_Meses1_idx` (`Meses_codMes` ASC),
+  CONSTRAINT `fk_Asignatura_Curso1`
+    FOREIGN KEY (`Curso_codCurso`)
+    REFERENCES `cfp`.`Cursos` (`codCurso`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Asignatura_Profesor1`
+    FOREIGN KEY (`Profesor_idProfesor`)
+    REFERENCES `cfp`.`Profesores` (`idProfesor`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Asignatura_Meses1`
+    FOREIGN KEY (`Meses_codMes`)
+    REFERENCES `cfp`.`Meses` (`codMes`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `cfp`.`Aulas`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cfp`.`Aulas` (
+  `numAula` INT NOT NULL,
+  `piso` INT(2) NOT NULL,
+  `pupitres` INT(2) NOT NULL,
+  PRIMARY KEY (`numAula`),
+  UNIQUE INDEX `codAula_UNIQUE` (`numAula` ASC),
+  UNIQUE INDEX `piso_UNIQUE` (`piso` ASC))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `cfp`.`Alumnos_Asignaturas`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cfp`.`Alumnos_Asignaturas` (
+  `Alumno_idAlumno` INT NOT NULL,
+  `Asignatura_idAsignatura` INT NOT NULL,
+  PRIMARY KEY (`Alumno_idAlumno`, `Asignatura_idAsignatura`),
+  INDEX `fk_Alumno_has_Asignatura_Asignatura1_idx` (`Asignatura_idAsignatura` ASC),
+  INDEX `fk_Alumno_has_Asignatura_Alumno1_idx` (`Alumno_idAlumno` ASC),
+  CONSTRAINT `fk_Alumno_has_Asignatura_Alumno1`
+    FOREIGN KEY (`Alumno_idAlumno`)
+    REFERENCES `cfp`.`Alumnos` (`idAlumno`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Alumno_has_Asignatura_Asignatura1`
+    FOREIGN KEY (`Asignatura_idAsignatura`)
+    REFERENCES `cfp`.`Asignaturas` (`idAsignatura`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `cfp`.`Asignaturas_Aulas`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cfp`.`Asignaturas_Aulas` (
+  `Asignatura_idAsignatura` INT NOT NULL,
+  `Aula_numAula` INT NOT NULL,
+  PRIMARY KEY (`Asignatura_idAsignatura`, `Aula_numAula`),
+  INDEX `fk_Asignatura_has_Aula_Aula1_idx` (`Aula_numAula` ASC),
+  INDEX `fk_Asignatura_has_Aula_Asignatura1_idx` (`Asignatura_idAsignatura` ASC),
+  CONSTRAINT `fk_Asignatura_has_Aula_Asignatura1`
+    FOREIGN KEY (`Asignatura_idAsignatura`)
+    REFERENCES `cfp`.`Asignaturas` (`idAsignatura`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Asignatura_has_Aula_Aula1`
+    FOREIGN KEY (`Aula_numAula`)
+    REFERENCES `cfp`.`Aulas` (`numAula`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

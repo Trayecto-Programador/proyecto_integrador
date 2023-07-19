@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="modelo">
+  <ClassDiagramComponents>
+    <Class name="Alumno" package="modelo" visibility="public" xPosition="365.0" yPosition="49.0">
+      <Fields>
+        <Field name="matriculacion" type="ArrayList&lt;Asignatura&gt;" visibility="private"/>
+      </Fields>
+      <Constructors/>
+      <Methods/>
+    </Class>
+    <Class name="Asignatura" package="modelo" visibility="public" xPosition="80.0" yPosition="308.0">
+      <Fields>
+        <Field name="codAsignatura" type="int" visibility="private"/>
+        <Field name="nombre" type="String" visibility="private"/>
+        <Field name="totaHoraSem" type="int" visibility="private"/>
+        <Field name="profesor" type="Profesor" visibility="private"/>
+        <Field name="nota" type="Calificacion" visibility="private"/>
+        <Field name="curso" type="Curso" visibility="private"/>
+        <Field name="aulas" type="ArrayList&lt;Aula&gt;" visibility="private"/>
+        <Field name="registro" type="Registro" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods/>
+    </Class>
+    <Class name="Aula" package="modelo" visibility="public" xPosition="101.0" yPosition="35.0">
+      <Fields>
+        <Field name="codAula" type="int" visibility="private"/>
+        <Field name="numPiso" type="int" visibility="private"/>
+        <Field name="cantPupitres" type="int" visibility="private"/>
+        <Field name="asignaturas" type="ArrayList&lt;Asignatura&gt;" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods/>
+    </Class>
+    <Class name="Calificacion" package="modelo" visibility="public" xPosition="421.0" yPosition="274.0">
+      <Fields>
+        <Field name="notaAlumno" type="int" visibility="private"/>
+        <Field name="incidencia" type="String" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods/>
+    </Class>
+    <Class name="CentroFormacion" package="modelo" visibility="public" xPosition="659.0" yPosition="21.0">
+      <Fields>
+        <Field name="profesores" type="ArrayList&lt;Profesor&gt;" visibility="private"/>
+        <Field name="alumnos" type="ArrayList&lt;Alumno&gt;" visibility="private"/>
+        <Field name="cursos" type="ArrayList&lt;Curso&gt;" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods/>
+    </Class>
+    <Class name="Curso" package="modelo" visibility="public" xPosition="579.0" yPosition="441.0">
+      <Fields>
+        <Field name="codCurso" type="int" visibility="private"/>
+        <Field name="nombre" type="String" visibility="private"/>
+        <Field name="asignaturas" type="ArrayList&lt;Asignatura&gt;" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods/>
+    </Class>
+    <Class name="Persona" package="modelo" visibility="public" isAbstract="true" xPosition="829.0" yPosition="213.0">
+      <Fields>
+        <Field name="nombre" type="String" visibility="private"/>
+        <Field name="apellido" type="String" visibility="private"/>
+        <Field name="dni" type="String" visibility="private"/>
+        <Field name="fecNac" type="LocalDate" visibility="private"/>
+        <Field name="direccion" type="String" visibility="private"/>
+        <Field name="localidad" type="String" visibility="private"/>
+        <Field name="codPos" type="int" visibility="private"/>
+        <Field name="telefono" type="String" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="toString" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Profesor" package="modelo" visibility="public" xPosition="503.0" yPosition="690.0">
+      <Fields>
+        <Field name="asignaturas" type="ArrayList&lt;Asignatura&gt;" visibility="private"/>
+        <Field name="tutor" type="Curso" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods/>
+    </Class>
+    <Class name="Registro" package="modelo" visibility="public" xPosition="133.0" yPosition="649.0">
+      <Fields>
+        <Field name="dia" type="int" visibility="private"/>
+        <Field name="hora" type="int" visibility="private"/>
+        <Field name="mes" type="String" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods/>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations>
+    <HasRelation name="alumnos" source="modelo.CentroFormacion" target="modelo.Alumno" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;Alumno&gt;"/>
+    <HasRelation name="aulas" source="modelo.Asignatura" target="modelo.Aula" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;Aula&gt;"/>
+    <IsRelation name="is" source="modelo.Profesor" target="modelo.Persona"/>
+    <HasRelation name="asignaturas" source="modelo.Profesor" target="modelo.Asignatura" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;Asignatura&gt;"/>
+    <HasRelation name="asignaturas" source="modelo.Curso" target="modelo.Asignatura" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;Asignatura&gt;"/>
+    <HasRelation name="tutor" source="modelo.Profesor" target="modelo.Curso" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="profesor" source="modelo.Asignatura" target="modelo.Profesor" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="asignaturas" source="modelo.Aula" target="modelo.Asignatura" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;Asignatura&gt;"/>
+    <HasRelation name="nota" source="modelo.Asignatura" target="modelo.Calificacion" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="cursos" source="modelo.CentroFormacion" target="modelo.Curso" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;Curso&gt;"/>
+    <HasRelation name="curso" source="modelo.Asignatura" target="modelo.Curso" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="registro" source="modelo.Asignatura" target="modelo.Registro" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="matriculacion" source="modelo.Alumno" target="modelo.Asignatura" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;Asignatura&gt;"/>
+    <IsRelation name="is" source="modelo.Alumno" target="modelo.Persona"/>
+    <HasRelation name="profesores" source="modelo.CentroFormacion" target="modelo.Profesor" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;Profesor&gt;"/>
+  </ClassDiagramRelations>
+</ClassDiagram>
